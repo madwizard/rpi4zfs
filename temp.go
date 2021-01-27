@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"io/ioutil"
 	"os"
 )
 
@@ -9,10 +10,13 @@ import (
 
 func main()  {
 	tempFile := "/sys/class/thermal/thermal_zone0/temp"
-	fd, err := os.OpenFile(tempFile)
+	temp, err := ioutil.ReadFile(tempFile)
 	if err != nil {
 		fmt.Errorf("Error: %s", err)
 		os.Exit(-1)
 	}
-
+	reading := string(temp)
+	full := reading[0:2]
+	partial := reading[2:]
+	fmt.Printf("%s.%s", full, partial)
 }
